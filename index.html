@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="10문항으로 알아보는 나의 커리어 성향 진단" />
+  <title>CAREER TYPE | 나의 커리어 성향 찾기</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #69748a;
+      --line: #e7eaf1;
+      --paper: #ffffff;
+      --bg: #f4f6fb;
+      --accent: #6558d3;
+      --accent-soft: #f0efff;
+      --shadow: 0 22px 60px rgba(31, 42, 75, .10);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 18px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(120, 111, 230, .12), transparent 28rem),
+        radial-gradient(circle at 95% 88%, rgba(62, 177, 164, .10), transparent 26rem),
+        var(--bg);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    button { font: inherit; }
+    .shell { width: min(100%, 760px); }
+    .topline { display: flex; align-items: center; justify-content: space-between; margin: 0 4px 16px; }
+    .brand { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 850; letter-spacing: .16em; color: #59627a; }
+    .brand-mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 9px; color: white; background: linear-gradient(135deg, #796de8, #4d8fd7); font-size: 15px; letter-spacing: 0; }
+    .top-note { color: #8992a5; font-size: 11px; font-weight: 650; letter-spacing: .07em; }
+    .panel { background: rgba(255,255,255,.96); border: 1px solid rgba(255,255,255,.9); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .screen { padding: clamp(26px, 6vw, 56px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    h1 { margin: 21px 0 14px; font-size: clamp(34px, 7vw, 55px); line-height: 1.12; letter-spacing: -.055em; }
+    .gradient-text { background: linear-gradient(100deg, #6558d3 8%, #358caa 90%); color: transparent; -webkit-background-clip: text; background-clip: text; }
+    .lead { max-width: 560px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.8; word-break: keep-all; }
+    .feature-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 30px 0 32px; }
+    .feature { padding: 15px 12px; border: 1px solid var(--line); border-radius: 15px; background: #fbfcff; }
+    .feature strong { display: block; font-size: 13px; margin-bottom: 5px; }
+    .feature span { color: #8a93a7; font-size: 11px; }
+    .primary-btn { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 54px; width: 100%; padding: 0 22px; border: 0; border-radius: 15px; color: white; background: linear-gradient(105deg, #665bd6, #4b82c9); font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 22px rgba(93, 86, 203, .22); transition: transform .18s, box-shadow .18s, opacity .18s; }
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(93, 86, 203, .28); }
+    .primary-btn:disabled { cursor: not-allowed; opacity: .38; transform: none; box-shadow: none; }
+    .fineprint { margin: 16px 0 0; color: #9aa2b2; font-size: 11px; line-height: 1.65; text-align: center; }
+    .progress-wrap { margin-bottom: 29px; }
+    .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #8992a5; font-size: 12px; font-weight: 700; }
+    .progress-meta strong { color: var(--accent); }
+    .progress-track { width: 100%; height: 7px; border-radius: 999px; background: #edf0f6; overflow: hidden; }
+    .progress-fill { width: 10%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7468e4, #55a4b5); transition: width .3s ease; }
+    .question-kicker { color: var(--accent); font-size: 12px; font-weight: 850; letter-spacing: .1em; }
+    h2 { margin: 12px 0 9px; font-size: clamp(23px, 4vw, 31px); line-height: 1.35; letter-spacing: -.04em; word-break: keep-all; }
+    .question-hint { margin: 0 0 24px; color: #8992a5; font-size: 13px; line-height: 1.6; }
+    .options { display: grid; gap: 11px; }
+    .option { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 66px; padding: 13px 16px; text-align: left; border: 1.5px solid var(--line); border-radius: 15px; color: var(--ink); background: white; cursor: pointer; transition: border-color .16s, background .16s, transform .16s; }
+    .option:hover { border-color: #b8b2f3; background: #fcfbff; transform: translateY(-1px); }
+    .option.selected { border-color: var(--accent); background: #f5f4ff; box-shadow: 0 0 0 3px rgba(101, 88, 211, .08); }
+    .option-letter { flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: #818ba0; background: #f2f4f8; font-size: 12px; font-weight: 850; }
+    .option.selected .option-letter { color: white; background: var(--accent); }
+    .option-text { flex: 1; font-size: 14px; line-height: 1.55; font-weight: 650; word-break: keep-all; }
+    .option-check { color: var(--accent); font-size: 18px; opacity: 0; }
+    .option.selected .option-check { opacity: 1; }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 25px; }
+    .back-btn, .text-btn { min-height: 48px; padding: 0 16px; border: 0; background: transparent; color: #7b8498; font-size: 13px; font-weight: 750; cursor: pointer; }
+    .back-btn:disabled { opacity: .28; cursor: default; }
+    .nav-row .primary-btn { width: auto; min-width: 152px; min-height: 48px; font-size: 13px; }
+    .result-head { text-align: center; }
+    .result-symbol { display: grid; place-items: center; width: 76px; height: 76px; margin: 0 auto 18px; border-radius: 24px; font-size: 34px; background: var(--type-soft); }
+    .result-label { color: var(--type-color); font-size: 11px; font-weight: 900; letter-spacing: .16em; }
+    .result-title { margin: 10px 0 10px; font-size: clamp(30px, 6vw, 43px); letter-spacing: -.055em; }
+    .result-subtitle { max-width: 490px; margin: 0 auto; color: var(--muted); font-size: 14px; line-height: 1.8; word-break: keep-all; }
+    .score-card { margin: 30px 0 24px; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: #fcfcfe; }
+    .score-title { margin: 0 0 18px; font-size: 13px; font-weight: 850; }
+    .score-row { display: grid; grid-template-columns: 84px 1fr 30px; gap: 10px; align-items: center; margin: 12px 0; }
+    .score-name { color: #59647b; font-size: 12px; font-weight: 700; }
+    .score-track { height: 8px; border-radius: 999px; background: #eceff5; overflow: hidden; }
+    .score-bar { height: 100%; border-radius: inherit; width: 0; transition: width .6s ease; }
+    .score-value { color: #7e879a; text-align: right; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .result-box { padding: 19px; border: 1px solid var(--line); border-radius: 17px; }
+    .result-box h3 { display: flex; align-items: center; gap: 7px; margin: 0 0 10px; font-size: 13px; }
+    .result-box p { margin: 0; color: #68748b; font-size: 12px; line-height: 1.75; word-break: keep-all; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+    .tag { padding: 6px 9px; border-radius: 999px; color: #59647b; background: #f2f4f8; font-size: 10px; font-weight: 750; }
+    .secondary-type { margin-top: 16px; padding: 13px 15px; border-radius: 13px; background: #f7f8fb; color: #6b7589; font-size: 12px; line-height: 1.65; }
+    .secondary-type strong { color: var(--ink); }
+    .result-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 25px; }
+    .result-actions .primary-btn { min-height: 50px; font-size: 13px; }
+    .outline-btn { min-height: 50px; border: 1px solid var(--line); border-radius: 15px; background: white; color: #68748b; font-size: 13px; font-weight: 800; cursor: pointer; }
+    .toast { min-height: 18px; margin-top: 9px; color: #6e7890; font-size: 11px; text-align: center; }
+    .disclaimer { margin: 22px 0 0; color: #9aa2b2; font-size: 10px; line-height: 1.65; text-align: center; }
+    [hidden] { display: none !important; }
+    @media (max-width: 560px) {
+      body { padding: 16px 11px; align-items: flex-start; }
+      .topline { margin: 3px 4px 12px; }
+      .screen { padding: 27px 21px; }
+      .feature-row { gap: 7px; margin: 24px 0; }
+      .feature { padding: 12px 9px; }
+      .feature strong { font-size: 11px; }
+      .feature span { font-size: 10px; }
+      .result-grid { grid-template-columns: 1fr; }
+      .score-card { padding: 17px 14px; }
+      .score-row { grid-template-columns: 74px 1fr 24px; gap: 7px; }
+      .result-actions { grid-template-columns: 1fr; }
+      .top-note { font-size: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topline">
+      <div class="brand"><span class="brand-mark">C</span> CAREER TYPE</div>
+      <div class="top-note">SELF DISCOVERY · 10 QUESTIONS</div>
+    </div>
+    <section class="panel">
+      <div id="intro" class="screen">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> CAREER PERSONALITY TEST</span>
+        <h1>나에게 맞는 일의 방식,<br><span class="gradient-text">어떤 유형일까?</span></h1>
+        <p class="lead">일을 선택하고 문제를 해결하는 나만의 패턴을 살펴보세요. 10개의 질문에 답하면 네 가지 커리어 성향 중 나와 가까운 유형과 어울리는 업무 환경을 알려드립니다.</p>
+        <div class="feature-row">
+          <div class="feature"><strong>10개 질문</strong><span>약 3분 소요</span></div>
+          <div class="feature"><strong>4가지 유형</strong><span>핵심 성향 분석</span></div>
+          <div class="feature"><strong>맞춤 가이드</strong><span>강점과 성장 팁</span></div>
+        </div>
+        <button id="startBtn" class="primary-btn" type="button">진단 시작하기 <span aria-hidden="true">→</span></button>
+        <p class="fineprint">정답은 없습니다. '잘해야 하는 모습'보다 평소 나의 생각과 행동에 가까운 답을 선택하세요.</p>
+      </div>
+
+      <div id="quiz" class="screen" hidden>
+        <div class="progress-wrap">
+          <div class="progress-meta"><span>나의 커리어 성향 탐색</span><span><strong id="progressCount">01</strong> / 10</span></div>
+          <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+        </div>
+        <div class="question-kicker" id="questionKicker">QUESTION 01</div>
+        <h2 id="questionTitle"></h2>
+        <p class="question-hint" id="questionHint">가장 나다운 선택 하나를 골라주세요.</p>
+        <div id="options" class="options" role="group" aria-label="답변 선택"></div>
+        <div class="nav-row">
+          <button id="prevBtn" class="back-btn" type="button">← 이전</button>
+          <button id="nextBtn" class="primary-btn" type="button" disabled>다음 질문 <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+
+      <div id="result" class="screen" hidden>
+        <div class="result-head">
+          <div id="resultSymbol" class="result-symbol" aria-hidden="true">✦</div>
+          <div id="resultLabel" class="result-label">YOUR CAREER TYPE</div>
+          <h2 id="resultTitle" class="result-title"></h2>
+          <p id="resultSubtitle" class="result-subtitle"></p>
+        </div>
+        <div class="score-card">
+          <p class="score-title">나의 성향 분포</p>
+          <div id="scoreBars"></div>
+        </div>
+        <div class="result-grid">
+          <article class="result-box"><h3>✧ 나의 강점</h3><p id="strengthText"></p></article>
+          <article class="result-box"><h3>⌂ 잘 맞는 업무 환경</h3><p id="environmentText"></p></article>
+          <article class="result-box"><h3>↗ 어울리는 직무 방향</h3><p id="careerText"></p><div id="careerTags" class="tag-list"></div></article>
+          <article class="result-box"><h3>◎ 성장 포인트</h3><p id="growthText"></p></article>
+        </div>
+        <div id="secondaryType" class="secondary-type"></div>
+        <div class="result-actions">
+          <button id="restartBtn" class="outline-btn" type="button">다시 테스트하기</button>
+          <button id="copyBtn" class="primary-btn" type="button">결과 요약 복사하기 <span aria-hidden="true">↗</span></button>
+        </div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <p class="disclaimer">이 테스트는 자기 이해와 진로 탐색을 돕기 위한 비공식 참고 도구입니다. 실제 역량이나 직업 적합성을 확정하거나 측정하는 심리검사는 아닙니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const types = {
+        explore: {
+          name: '탐험가형', en: 'THE EXPLORER', icon: '🧭', color: '#7866d8', soft: '#f0edff',
+          subtitle: '새로운 가능성을 발견하고 변화를 기회로 만드는 사람입니다. 정해진 답을 따르기보다 질문을 던지고, 다양한 시도를 통해 더 나은 방향을 찾아갑니다.',
+          strengths: '호기심과 관점 전환이 빠릅니다. 익숙한 방식에 머무르지 않고 새로운 아이디어를 제안하며, 불확실한 상황에서도 가능성을 찾아내는 데 강점이 있습니다.',
+          environment: '자율성이 있고 새로운 과제를 자주 만나는 환경에서 동기가 높아집니다. 실험과 개선을 허용하고 다양한 분야의 사람들과 교류할 수 있는 팀이 잘 맞습니다.',
+          careers: '새로운 시장·고객·서비스를 탐색하고 방향을 기획하는 역할을 고려해 보세요.', tags: ['신사업 기획', '마케팅·브랜딩', '서비스 기획', '창업·사업개발'],
+          growth: '아이디어를 많이 내는 것에서 한 걸음 더 나아가, 우선순위를 정하고 작은 실험으로 검증하는 습관을 길러보세요. 실행 결과를 기록하면 강점이 성과로 연결됩니다.'
+        },
+        analyst: {
+          name: '분석가형', en: 'THE ANALYST', icon: '🔎', color: '#328caa', soft: '#e8f6f8',
+          subtitle: '복잡한 문제를 구조화하고 근거를 바탕으로 답을 찾는 사람입니다. 정보를 차분히 살펴 패턴을 발견하고, 논리적인 판단으로 의사결정의 질을 높입니다.',
+          strengths: '꼼꼼함과 논리적 사고가 돋보입니다. 문제의 원인을 나누어 살피고 데이터를 통해 가설을 확인하며, 정확성과 일관성을 유지하는 데 강점이 있습니다.',
+          environment: '목표와 판단 기준이 명확하고, 깊이 있게 집중할 시간이 보장되는 환경이 좋습니다. 전문성을 축적하고 분석 결과가 실제 의사결정에 활용되는 팀과 잘 맞습니다.',
+          careers: '데이터와 근거를 활용해 문제를 진단하고 의사결정을 지원하는 역할을 고려해 보세요.', tags: ['경영·사업 분석', '재무·회계', '리서치', '전략·리스크 관리'],
+          growth: '완벽한 근거를 기다리느라 결정을 늦추지 않도록 주의하세요. 핵심 정보로 우선 판단한 뒤, 새 정보가 들어오면 수정하는 연습이 도움이 됩니다.'
+        },
+        connect: {
+          name: '협력가형', en: 'THE CONNECTOR', icon: '🤝', color: '#bd7a45', soft: '#fff2e8',
+          subtitle: '사람을 이해하고 연결하며 함께 성과를 만드는 사람입니다. 서로 다른 관점을 조율하고 신뢰를 쌓아, 개인의 능력이 팀의 결과로 이어지도록 돕습니다.',
+          strengths: '공감과 소통, 관계 형성에 강점이 있습니다. 상대방의 필요를 파악하고 의견 차이를 조정하며, 함께 일하는 사람들이 역량을 발휘할 수 있도록 지원합니다.',
+          environment: '협업과 피드백이 활발하고 사람에게 미치는 영향을 체감할 수 있는 환경이 잘 맞습니다. 팀 간 연결이나 고객·구성원과의 지속적인 관계가 중요한 업무에서 에너지를 얻습니다.',
+          careers: '사람과 조직의 필요를 파악하고 관계를 통해 문제를 해결하는 역할을 고려해 보세요.', tags: ['인사·조직문화', 'HR·교육', '고객 성공', '영업·커뮤니케이션'],
+          growth: '모두를 만족시키려다 자신의 우선순위가 흐려지지 않도록 경계를 세워보세요. 의견을 조율할 때는 공감과 함께 데이터·기준을 명확히 제시하면 더 큰 영향력을 발휘할 수 있습니다.'
+        },
+        execute: {
+          name: '실행가형', en: 'THE DOER', icon: '🚀', color: '#3b9972', soft: '#e9f7ef',
+          subtitle: '목표를 구체적인 행동으로 옮기고 결과를 만들어 내는 사람입니다. 해야 할 일을 정리하고 책임 있게 추진하며, 눈에 보이는 진전을 통해 동기를 얻습니다.',
+          strengths: '추진력과 책임감, 우선순위 설정이 강점입니다. 일을 단계별로 나누고 필요한 자원을 확보해 마감과 목표를 맞추며, 계획을 실제 결과로 연결합니다.',
+          environment: '목표와 역할이 분명하고 실행 권한이 주어지는 환경에서 역량이 잘 드러납니다. 빠른 피드백과 성과 확인이 가능하며, 현장의 문제를 직접 개선할 수 있는 팀이 잘 맞습니다.',
+          careers: '프로젝트를 운영하고 자원을 조정해 목표를 달성하는 역할을 고려해 보세요.', tags: ['프로젝트 관리', '운영·물류', '영업 관리', '생산·서비스 운영'],
+          growth: '속도를 내는 만큼 시작 전에 문제 정의와 이해관계자 확인을 놓치지 마세요. 중간 점검 시간을 확보하면 재작업을 줄이고 지속 가능한 성과를 만들 수 있습니다.'
+        }
+      };
+
+      const questions = [
+        { title: '처음 맡아보는 과제가 주어졌습니다. 가장 먼저 하고 싶은 일은?', options: [
+          ['explore', '가능한 접근법을 여러 가지 떠올리고 새로운 방향을 찾아본다.'], ['analyst', '목표와 현재 상황을 정리하고 필요한 정보를 수집한다.'], ['connect', '함께할 사람들과 이야기하며 기대와 관점을 파악한다.'], ['execute', '해야 할 일을 나누고 바로 첫 단계에 착수한다.']
+        ]},
+        { title: '팀 프로젝트에서 가장 재미를 느끼는 순간은?', options: [
+          ['explore', '남들이 생각하지 못한 아이디어를 제안하고 시도할 때'], ['analyst', '복잡한 자료에서 의미 있는 패턴과 해답을 찾을 때'], ['connect', '팀원들의 의견을 연결해 모두가 납득하는 방향을 만들 때'], ['execute', '계획한 일이 차근차근 완료되고 목표에 가까워질 때']
+        ]},
+        { title: '주변 사람에게 가장 듣고 싶은 칭찬은?', options: [
+          ['explore', '“늘 새로운 관점을 가져오는 사람이야.”'], ['analyst', '“꼼꼼하고 판단에 근거가 있어.”'], ['connect', '“함께 일하면 편하고 믿음이 가.”'], ['execute', '“맡기면 끝까지 결과를 만들어 내.”']
+        ]},
+        { title: '회사에서 새로운 업무를 선택할 기회가 생긴다면?', options: [
+          ['explore', '아직 정답이 없는 신규 서비스나 시장을 탐색하는 업무'], ['analyst', '매출·비용·고객 데이터를 분석해 개선점을 찾는 업무'], ['connect', '구성원이나 고객의 경험을 개선하는 업무'], ['execute', '정해진 목표에 맞춰 일정과 자원을 관리하는 업무']
+        ]},
+        { title: '팀에서 의견 충돌이 생겼을 때 나는 보통?', options: [
+          ['explore', '기존 선택지 말고 다른 해결 방법은 없는지 제안한다.'], ['analyst', '각 주장의 근거와 사실관계를 확인한다.'], ['connect', '각자가 중요하게 생각하는 점을 듣고 공통점을 찾는다.'], ['execute', '결정 기준과 다음 행동을 정해 논의를 진전시킨다.']
+        ]},
+        { title: '새로운 능력을 배울 때 나에게 가장 효과적인 방식은?', options: [
+          ['explore', '여러 분야를 경험하며 직접 시도해 보는 것'], ['analyst', '개념과 원리를 체계적으로 이해하고 정리하는 것'], ['connect', '다른 사람과 의견을 나누고 함께 배우는 것'], ['execute', '실제 과제를 맡아 반복해서 해보는 것']
+        ]},
+        { title: '여러 업무가 한꺼번에 들어오면 무엇을 기준으로 우선순위를 정하나요?', options: [
+          ['explore', '장기적으로 새로운 기회나 성장 가능성을 만드는 일'], ['analyst', '중요도와 근거를 따져 효과가 큰 일'], ['connect', '고객이나 동료 등 관련된 사람에게 영향이 큰 일'], ['execute', '마감이 가깝고 지금 바로 처리할 수 있는 일']
+        ]},
+        { title: '가장 함께 일하고 싶은 리더의 모습은?', options: [
+          ['explore', '새로운 시도를 믿고 자율적으로 해볼 기회를 주는 리더'], ['analyst', '명확한 기준과 논리적인 피드백을 주는 리더'], ['connect', '구성원의 이야기를 잘 듣고 성장을 지원하는 리더'], ['execute', '목표와 역할을 분명히 하고 실행을 뒷받침하는 리더']
+        ]},
+        { title: '하루 일과를 마쳤을 때 가장 큰 보람을 느끼는 순간은?', options: [
+          ['explore', '새로운 가능성을 발견하거나 기존 방식을 바꿨을 때'], ['analyst', '어려운 문제의 원인을 정확히 이해했을 때'], ['connect', '누군가에게 도움이 되고 협업이 잘 이루어졌을 때'], ['execute', '계획한 일을 마무리하고 수치나 결과로 확인했을 때']
+        ]},
+        { title: '앞으로의 커리어에서 가장 중요하게 생각하는 것은?', options: [
+          ['explore', '계속 배우고 변화하며 새로운 영역에 도전하는 것'], ['analyst', '한 분야의 전문성을 깊게 쌓고 신뢰받는 전문가가 되는 것'], ['connect', '좋은 사람들과 의미 있는 관계와 성과를 만드는 것'], ['execute', '큰 책임을 맡고 목표를 달성하며 영향력을 넓히는 것']
+        ]}
+      ];
+
+      const typeOrder = ['explore', 'analyst', 'connect', 'execute'];
+      const answers = Array(questions.length).fill(null);
+      let current = 0;
+      const $ = (id) => document.getElementById(id);
+      const intro = $('intro'), quiz = $('quiz'), result = $('result');
+
+      function showScreen(screen) {
+        intro.hidden = screen !== 'intro';
+        quiz.hidden = screen !== 'quiz';
+        result.hidden = screen !== 'result';
+      }
+      function renderQuestion() {
+        const q = questions[current];
+        $('progressCount').textContent = String(current + 1).padStart(2, '0');
+        $('progressFill').style.width = `${((current + 1) / questions.length) * 100}%`;
+        $('questionKicker').textContent = `QUESTION ${String(current + 1).padStart(2, '0')}`;
+        $('questionTitle').textContent = q.title;
+        $('prevBtn').disabled = current === 0;
+        $('nextBtn').disabled = answers[current] === null;
+        $('nextBtn').innerHTML = current === questions.length - 1 ? '결과 확인하기 <span aria-hidden="true">→</span>' : '다음 질문 <span aria-hidden="true">→</span>';
+        $('options').innerHTML = '';
+        q.options.forEach(([type, label], i) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = `option${answers[current] === type ? ' selected' : ''}`;
+          button.setAttribute('aria-pressed', answers[current] === type ? 'true' : 'false');
+          button.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + i)}</span><span class="option-text"></span><span class="option-check" aria-hidden="true">✓</span>`;
+          button.querySelector('.option-text').textContent = label;
+          button.addEventListener('click', () => {
+            answers[current] = type;
+            [...$('options').children].forEach((el, index) => {
+              const selected = index === i;
+              el.classList.toggle('selected', selected);
+              el.setAttribute('aria-pressed', selected ? 'true' : 'false');
+            });
+            $('nextBtn').disabled = false;
+          });
+          $('options').appendChild(button);
+        });
+      }
+      function calculateScores() {
+        const scores = Object.fromEntries(typeOrder.map((key) => [key, 0]));
+        answers.forEach((answer) => { if (answer) scores[answer] += 1; });
+        return scores;
+      }
+      function renderResult() {
+        const scores = calculateScores();
+        const ranking = [...typeOrder].sort((a, b) => {
+          if (scores[b] !== scores[a]) return scores[b] - scores[a];
+          // 점수가 같으면 뒤쪽 문항에서 선택한 성향을 우선해 대표 유형을 정합니다.
+          return answers.lastIndexOf(b) - answers.lastIndexOf(a);
+        });
+        const primary = ranking[0], secondary = ranking[1], data = types[primary];
+        document.documentElement.style.setProperty('--type-color', data.color);
+        document.documentElement.style.setProperty('--type-soft', data.soft);
+        $('resultSymbol').textContent = data.icon;
+        $('resultLabel').textContent = data.en;
+        $('resultTitle').textContent = data.name;
+        $('resultSubtitle').textContent = data.subtitle;
+        $('strengthText').textContent = data.strengths;
+        $('environmentText').textContent = data.environment;
+        $('careerText').textContent = data.careers;
+        $('growthText').textContent = data.growth;
+        $('careerTags').innerHTML = '';
+        data.tags.forEach((tag) => {
+          const span = document.createElement('span'); span.className = 'tag'; span.textContent = tag; $('careerTags').appendChild(span);
+        });
+        $('scoreBars').innerHTML = '';
+        typeOrder.forEach((key) => {
+          const item = types[key];
+          const row = document.createElement('div'); row.className = 'score-row';
+          const name = document.createElement('span'); name.className = 'score-name'; name.textContent = item.name;
+          const track = document.createElement('div'); track.className = 'score-track';
+          const bar = document.createElement('div'); bar.className = 'score-bar'; bar.style.background = item.color; bar.style.width = `${scores[key] * 10}%`;
+          track.appendChild(bar);
+          const value = document.createElement('span'); value.className = 'score-value'; value.textContent = `${scores[key]}/10`;
+          row.append(name, track, value); $('scoreBars').appendChild(row);
+        });
+        $('secondaryType').innerHTML = `<strong>함께 나타난 성향: ${types[secondary].name}</strong> · ${scores[secondary]}점입니다. 대표 유형과 함께 이 성향도 상황에 따라 발휘될 수 있어요.`;
+        $('toast').textContent = '';
+        showScreen('result');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      $('startBtn').addEventListener('click', () => { current = 0; showScreen('quiz'); renderQuestion(); });
+      $('prevBtn').addEventListener('click', () => { if (current > 0) { current--; renderQuestion(); } });
+      $('nextBtn').addEventListener('click', () => {
+        if (answers[current] === null) return;
+        if (current < questions.length - 1) { current++; renderQuestion(); }
+        else renderResult();
+      });
+      $('restartBtn').addEventListener('click', () => {
+        answers.fill(null); current = 0; showScreen('intro'); window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      $('copyBtn').addEventListener('click', async () => {
+        const scores = calculateScores();
+        const ranking = [...typeOrder].sort((a, b) => {
+          if (scores[b] !== scores[a]) return scores[b] - scores[a];
+          return answers.lastIndexOf(b) - answers.lastIndexOf(a);
+        });
+        const primary = ranking[0], data = types[primary];
+        const summary = `나의 커리어 성향은 ${data.name}입니다.\n${data.subtitle}\n성향 점수: ${typeOrder.map(k => `${types[k].name} ${scores[k]}점`).join(' / ')}\n어울리는 직무 방향: ${data.tags.join(', ')}\n※ 자기 이해를 위한 비공식 참고 결과입니다.`;
+        try {
+          await navigator.clipboard.writeText(summary);
+          $('toast').textContent = '결과 요약을 클립보드에 복사했습니다.';
+        } catch (error) {
+          $('toast').textContent = '브라우저에서 복사를 허용하지 않았습니다. 결과 화면을 직접 복사해 주세요.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
